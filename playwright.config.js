@@ -1,8 +1,9 @@
+// playwright.config.js
 import { defineConfig, devices } from '@playwright/test';
 import { defineBddConfig } from 'playwright-bdd';
 import dotenv from 'dotenv';
 
-dotenv.config();
+dotenv.config(); // Local .env load karne ke liye
 
 const testDir = defineBddConfig({
   features: 'features/*.feature',
@@ -14,7 +15,6 @@ export default defineConfig({
   workers: process.env.CI ? 2 : undefined,
   fullyParallel: true,
   
-  // Normal HTML aur Allure Report dono config
   reporter: [
     ['html', { open: 'never' }],
     ['allure-playwright', { outputFolder: 'allure-results' }]
@@ -24,7 +24,8 @@ export default defineConfig({
   retries: process.env.CI ? 1 : 0,
 
   use: {
-    baseURL: process.env.BASE_URL || 'https://sauce-demo.myshopify.com',
+    // Single line update: Hardcoded URL poori tarah removed
+    baseURL: process.env.BASE_URL,
     headless: process.env.CI ? true : false,
     trace: 'on-first-retry',
     actionTimeout: 30000,
