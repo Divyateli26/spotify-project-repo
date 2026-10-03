@@ -1,5 +1,9 @@
 import { defineConfig, devices } from '@playwright/test';
 import { defineBddConfig } from 'playwright-bdd';
+import dotenv from 'dotenv';
+
+// Load .env variables
+dotenv.config();
 
 const testDir = defineBddConfig({
   features: 'features/*.feature',
@@ -15,7 +19,8 @@ export default defineConfig({
   retries: process.env.CI ? 1 : 0,
 
   use: {
-    baseURL: 'https://sauce-demo.myshopify.com',
+    // .env se BASE_URL lega, agar nahi milta toh fallback URL use karega
+    baseURL: process.env.BASE_URL || 'https://sauce-demo.myshopify.com',
     headless: process.env.CI ? true : false,
     trace: 'on-first-retry',
     actionTimeout: 30000,
