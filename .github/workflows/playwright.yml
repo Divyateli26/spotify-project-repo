@@ -34,10 +34,10 @@ jobs:
         env:
           BASE_URL: ${{ secrets.BASE_URL }}
 
-      # 1. Generate Allure HTML Report from allure-results
+      # 1. Generate Single-File Standalone Allure HTML Report
       - name: Generate Allure Report
         if: ${{ !cancelled() }}
-        run: npx allure generate allure-results --clean -o allure-report
+        run: npx allure generate allure-results --clean --single-file -o allure-report
 
       # 2. Upload Standard Playwright HTML Report
       - name: Upload Playwright HTML Report
