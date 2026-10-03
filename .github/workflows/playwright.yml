@@ -2,7 +2,7 @@ name: Playwright BDD Sauce Demo Tests
 
 on:
   push:
-    branches: [ main, master, sub ]
+    branches: [ main, master, sub, feature-* ]
   pull_request:
     branches: [ main, master ]
 
@@ -12,30 +12,30 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: lts/*
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
 
-    - name: Install Project Dependencies
-      run: npm ci || npm install
+      - name: Install Project Dependencies
+        run: npm ci || npm install
 
-    - name: Install Playwright Browsers with OS Dependencies
-      run: npx playwright install --with-deps
+      - name: Install Playwright Browsers with OS Dependencies
+        run: npx playwright install --with-deps
 
-    - name: Generate BDD Specs
-      run: npx bddgen
+      - name: Generate BDD Specs
+        run: npx bddgen
 
-    - name: Execute Playwright BDD Tests
-      run: npx playwright test
+      - name: Execute Playwright BDD Tests
+        run: npx playwright test
 
-    - name: Upload Playwright HTML Report
-      if: ${{ !cancelled() }}
-      uses: actions/upload-artifact@v4
-      with:
-        name: playwright-report
-        path: playwright-report/
-        retention-days: 30
+      - name: Upload Playwright HTML Report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
