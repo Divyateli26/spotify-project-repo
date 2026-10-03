@@ -11,3 +11,7 @@ node_modules/
 
 # Environment Variables
 spotify.env
+
+# Allure Reports
+allure-results/
+allure-report/

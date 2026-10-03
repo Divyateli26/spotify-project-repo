@@ -13,7 +13,13 @@ export default defineConfig({
   testDir,
   workers: process.env.CI ? 2 : undefined,
   fullyParallel: true,
-  reporter: 'html',
+  
+  // Normal HTML aur Allure Report dono config
+  reporter: [
+    ['html', { open: 'never' }],
+    ['allure-playwright', { outputFolder: 'allure-results' }]
+  ],
+  
   timeout: 60 * 1000,
   retries: process.env.CI ? 1 : 0,
 
@@ -26,7 +32,6 @@ export default defineConfig({
     viewport: { width: 1280, height: 720 },
   },
 
-  // Cross-browser matrix setup
   projects: [
     {
       name: 'chromium',
