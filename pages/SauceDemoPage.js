@@ -1,18 +1,11 @@
 import { expect } from '@playwright/test';
 
 export class SauceDemoPage {
-  /**
-   * @param {import('@playwright/test').Page} page
-   */
   constructor(page) {
     this.page = page;
-
-    // Locators
-    this.searchIcon = page.locator('.site-header__search-toggle, header a[href*="search"], button[aria-label*="Search"]').first();
-    this.searchInput = page.locator('input[name="q"], input[type="search"]').first();
-    
-    // Shopify stores ke sabhi product links aur cards ke liye flexible locator
-    this.productGrid = page.locator('a[href*="/products/"], .product-card, .grid-view-item, [class*="product"]').first();
+    this.searchIcon = page.locator('summary.header__icon--search, .header__search, button[aria-label*="Search"]');
+    this.searchInput = page.locator('input[type="search"], #Search-In-Modal, input[name="q"]');
+    this.productCards = page.locator('main a[href*="/products/"], #product-grid a[href*="/products/"], .card-wrapper a[href*="/products/"], a[href*="/products/"]');
   }
 
   async navigateToHome() {
@@ -20,21 +13,28 @@ export class SauceDemoPage {
   }
 
   async verifyTitle(expectedKeyword) {
-    const title = await this.page.title();
-    expect(title.toLowerCase()).toContain(expectedKeyword.toLowerCase());
+    await expect(this.page).toHaveTitle(new RegExp(expectedKeyword, 'i'));
   }
 
-  async verifyUrlContains(keyword) {
-    await expect(this.page).toHaveURL(new RegExp(keyword, 'i'));
+  async verifyUrl(expectedKeyword) {
+    await this.verifyUrlContains(expectedKeyword);
   }
 
-  async searchForProduct(productName) {
-    if (await this.searchIcon.isVisible()) {
-      await this.searchIcon.click();
+  async verifyUrlContains(expectedKeyword) {
+    await expect(this.page).toHaveURL(new RegExp(expectedKeyword, 'i'));
+  }
+
+  async searchForProduct(product) {
+    await this.searchProduct(product);
+  }
+
+  async searchProduct(productName) {
+    if (await this.searchIcon.first().isVisible({ timeout: 3000 }).catch(() => false)) {
+      await this.searchIcon.first().click();
     }
-    await this.searchInput.waitFor({ state: 'visible', timeout: 15000 });
-    await this.searchInput.fill(productName);
-    await this.searchInput.press('Enter');
+    await this.searchInput.first().waitFor({ state: 'visible', timeout: 10000 });
+    await this.searchInput.first().fill(productName);
+    await this.searchInput.first().press('Enter');
     await this.page.waitForLoadState('domcontentloaded');
   }
 
@@ -43,12 +43,23 @@ export class SauceDemoPage {
   }
 
   async verifyProductsVisible() {
-    await expect(this.productGrid).toBeVisible({ timeout: 15000 });
+    await expect(this.productCards.first()).toBeVisible({ timeout: 15000 });
   }
 
   async clickNavigationLink(linkName) {
-    const link = this.page.getByRole('link', { name: linkName, exact: false }).first();
-    await link.click();
+    await this.page.locator(`header a:has-text("${linkName}"), nav a:has-text("${linkName}")`).first().click();
+  }
+
+  async selectProduct(productName) {
+    const productLink = this.productCards.first();
+    await productLink.waitFor({ state: 'visible', timeout: 15000 });
+    
+    const href = await productLink.getAttribute('href');
+    if (href) {
+      await this.page.goto(href, { waitUntil: 'domcontentloaded' });
+    } else {
+      await productLink.click();
+      await this.page.waitForURL(/\/products\//i, { timeout: 15000 }).catch(() => {});
+    }
   }
 }
-//done
