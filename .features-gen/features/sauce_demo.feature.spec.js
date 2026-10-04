@@ -3,34 +3,25 @@ import { test } from "playwright-bdd";
 
 test.describe('Sauce Demo Store Automation Scenarios', () => {
 
-  test.beforeEach('Background', async ({ Given, page }, testInfo) => { if (testInfo.error) return;
-    await Given('User is on the home page', null, { page }); 
-  });
-  
-  test('Homepage title aur URL verify karna', async ({ Then, And, page }) => { 
-    await Then('Page title me "Sauce Demo" hona chahiye', null, { page }); 
-    await And('Page URL me "sauce-demo.myshopify.com" hona chahiye', null, { page }); 
+  test('Homepage title aur URL verify karna', { tag: ['@regression', '@smoke'] }, async ({ Given, Then, page }) => { 
+    await Given('User store ke homepage par hai', null, { page }); 
+    await Then('Homepage ka title "Sauce Demo" hona chahiye', null, { page }); 
   });
 
   test.describe('Store par product search karna', () => {
 
-    test('Example #1', async ({ When, Then, And, page }) => { 
-      await When('Search icon par click karke search input me "shirt" type karta hu', null, { page }); 
-      await Then('Search results page display hona chahiye', null, { page }); 
-      await And('Products list visible honi chahiye', null, { page }); 
+    test('Example #1', { tag: ['@regression'] }, async ({ Given, When, Then, page }) => { 
+      await Given('User store ke homepage par hai', null, { page }); 
+      await When('User search bar me "Jacket" type karta hai', null, { page }); 
+      await Then('Search result me "Jacket" dikhna chahiye', null, { page }); 
     });
 
-    test('Example #2', async ({ When, Then, And, page }) => { 
-      await When('Search icon par click karke search input me "Jacket" type karta hu', null, { page }); 
-      await Then('Search results page display hona chahiye', null, { page }); 
-      await And('Products list visible honi chahiye', null, { page }); 
+    test('Example #2', { tag: ['@regression'] }, async ({ Given, When, Then, page }) => { 
+      await Given('User store ke homepage par hai', null, { page }); 
+      await When('User search bar me "Shirt" type karta hai', null, { page }); 
+      await Then('Search result me "Shirt" dikhna chahiye', null, { page }); 
     });
 
-  });
-
-  test('Navigation links verify karna', async ({ When, Then, page }) => { 
-    await When('Header navigation link "Catalog" par click karta hu', null, { page }); 
-    await Then('Page URL me "collections/all" hona chahiye', null, { page }); 
   });
 
 });
@@ -49,8 +40,7 @@ test.use({
 });
 
 const bddFileData = [ // bdd-data-start
-  {"pwTestLine":10,"pickleLine":6,"tags":[],"steps":[{"pwStepLine":7,"gherkinStepLine":4,"keywordType":"Context","textWithKeyword":"Given User is on the home page","isBg":true,"stepMatchArguments":[]},{"pwStepLine":11,"gherkinStepLine":7,"keywordType":"Outcome","textWithKeyword":"Then Page title me \"Sauce Demo\" hona chahiye","stepMatchArguments":[{"group":{"start":14,"value":"\"Sauce Demo\"","children":[{"start":15,"value":"Sauce Demo","children":[{}]},{"children":[{}]}]},"parameterTypeName":"string"}]},{"pwStepLine":12,"gherkinStepLine":8,"keywordType":"Outcome","textWithKeyword":"And Page URL me \"sauce-demo.myshopify.com\" hona chahiye","stepMatchArguments":[{"group":{"start":12,"value":"\"sauce-demo.myshopify.com\"","children":[{"start":13,"value":"sauce-demo.myshopify.com","children":[{}]},{"children":[{}]}]},"parameterTypeName":"string"}]}]},
-  {"pwTestLine":17,"pickleLine":17,"tags":[],"steps":[{"pwStepLine":7,"gherkinStepLine":4,"keywordType":"Context","textWithKeyword":"Given User is on the home page","isBg":true,"stepMatchArguments":[]},{"pwStepLine":18,"gherkinStepLine":11,"keywordType":"Action","textWithKeyword":"When Search icon par click karke search input me \"shirt\" type karta hu","stepMatchArguments":[{"group":{"start":44,"value":"\"shirt\"","children":[{"start":45,"value":"shirt","children":[{}]},{"children":[{}]}]},"parameterTypeName":"string"}]},{"pwStepLine":19,"gherkinStepLine":12,"keywordType":"Outcome","textWithKeyword":"Then Search results page display hona chahiye","stepMatchArguments":[]},{"pwStepLine":20,"gherkinStepLine":13,"keywordType":"Outcome","textWithKeyword":"And Products list visible honi chahiye","stepMatchArguments":[]}]},
-  {"pwTestLine":23,"pickleLine":18,"tags":[],"steps":[{"pwStepLine":7,"gherkinStepLine":4,"keywordType":"Context","textWithKeyword":"Given User is on the home page","isBg":true,"stepMatchArguments":[]},{"pwStepLine":24,"gherkinStepLine":11,"keywordType":"Action","textWithKeyword":"When Search icon par click karke search input me \"Jacket\" type karta hu","stepMatchArguments":[{"group":{"start":44,"value":"\"Jacket\"","children":[{"start":45,"value":"Jacket","children":[{}]},{"children":[{}]}]},"parameterTypeName":"string"}]},{"pwStepLine":25,"gherkinStepLine":12,"keywordType":"Outcome","textWithKeyword":"Then Search results page display hona chahiye","stepMatchArguments":[]},{"pwStepLine":26,"gherkinStepLine":13,"keywordType":"Outcome","textWithKeyword":"And Products list visible honi chahiye","stepMatchArguments":[]}]},
-  {"pwTestLine":31,"pickleLine":20,"tags":[],"steps":[{"pwStepLine":7,"gherkinStepLine":4,"keywordType":"Context","textWithKeyword":"Given User is on the home page","isBg":true,"stepMatchArguments":[]},{"pwStepLine":32,"gherkinStepLine":21,"keywordType":"Action","textWithKeyword":"When Header navigation link \"Catalog\" par click karta hu","stepMatchArguments":[{"group":{"start":23,"value":"\"Catalog\"","children":[{"start":24,"value":"Catalog","children":[{}]},{"children":[{}]}]},"parameterTypeName":"string"}]},{"pwStepLine":33,"gherkinStepLine":22,"keywordType":"Outcome","textWithKeyword":"Then Page URL me \"collections/all\" hona chahiye","stepMatchArguments":[{"group":{"start":12,"value":"\"collections/all\"","children":[{"start":13,"value":"collections/all","children":[{}]},{"children":[{}]}]},"parameterTypeName":"string"}]}]},
+  {"pwTestLine":6,"pickleLine":5,"tags":["@regression","@smoke"],"steps":[{"pwStepLine":7,"gherkinStepLine":6,"keywordType":"Context","textWithKeyword":"Given User store ke homepage par hai","stepMatchArguments":[]},{"pwStepLine":8,"gherkinStepLine":7,"keywordType":"Outcome","textWithKeyword":"Then Homepage ka title \"Sauce Demo\" hona chahiye","stepMatchArguments":[{"group":{"start":18,"value":"\"Sauce Demo\"","children":[{"start":19,"value":"Sauce Demo","children":[{}]},{"children":[{}]}]},"parameterTypeName":"string"}]}]},
+  {"pwTestLine":13,"pickleLine":16,"tags":["@regression"],"steps":[{"pwStepLine":14,"gherkinStepLine":10,"keywordType":"Context","textWithKeyword":"Given User store ke homepage par hai","stepMatchArguments":[]},{"pwStepLine":15,"gherkinStepLine":11,"keywordType":"Action","textWithKeyword":"When User search bar me \"Jacket\" type karta hai","stepMatchArguments":[{"group":{"start":19,"value":"\"Jacket\"","children":[{"start":20,"value":"Jacket","children":[{}]},{"children":[{}]}]},"parameterTypeName":"string"}]},{"pwStepLine":16,"gherkinStepLine":12,"keywordType":"Outcome","textWithKeyword":"Then Search result me \"Jacket\" dikhna chahiye","stepMatchArguments":[{"group":{"start":17,"value":"\"Jacket\"","children":[{"start":18,"value":"Jacket","children":[{}]},{"children":[{}]}]},"parameterTypeName":"string"}]}]},
+  {"pwTestLine":19,"pickleLine":17,"tags":["@regression"],"steps":[{"pwStepLine":20,"gherkinStepLine":10,"keywordType":"Context","textWithKeyword":"Given User store ke homepage par hai","stepMatchArguments":[]},{"pwStepLine":21,"gherkinStepLine":11,"keywordType":"Action","textWithKeyword":"When User search bar me \"Shirt\" type karta hai","stepMatchArguments":[{"group":{"start":19,"value":"\"Shirt\"","children":[{"start":20,"value":"Shirt","children":[{}]},{"children":[{}]}]},"parameterTypeName":"string"}]},{"pwStepLine":22,"gherkinStepLine":12,"keywordType":"Outcome","textWithKeyword":"Then Search result me \"Shirt\" dikhna chahiye","stepMatchArguments":[{"group":{"start":17,"value":"\"Shirt\"","children":[{"start":18,"value":"Shirt","children":[{}]},{"children":[{}]}]},"parameterTypeName":"string"}]}]},
 ]; // bdd-data-end

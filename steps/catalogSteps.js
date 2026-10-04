@@ -1,14 +1,15 @@
-import { createBdd } from 'playwright-bdd';
-import { CatalogPage } from '../pages/CatalogPage';
+const { createBdd } = require('playwright-bdd');
+const { expect } = require('@playwright/test');
 
-const { Then } = createBdd();
+const { Given, Then } = createBdd();
 
-Then('Catalog page URL me {string} hona chahiye', async ({ page }, urlKeyword) => {
-  const catalogPage = new CatalogPage(page);
-  await catalogPage.verifyCatalogUrl(urlKeyword);
+Given('User catalog page par navigate karta hai', async ({ page }) => {
+    const baseUrl = process.env.BASE_URL || 'https://sauce-demo.myshopify.com';
+    await page.goto(`${baseUrl}/collections/all`);
 });
 
-Then('Catalog collection heading visible honi chahiye', async ({ page }) => {
-  const catalogPage = new CatalogPage(page);
-  await catalogPage.verifyCatalogHeading();
+Then('Catalog page ka heading {string} hona chahiye', async ({ page }, expectedHeading) => {
+    // Header logo (#logo) ko bypass karke main section ka heading locate karein
+    const heading = page.locator('main h1, .main-content h1, h1:not(#logo), .section-header__title, .collection-hero__title').first();
+    await expect(heading).toContainText(expectedHeading, { ignoreCase: true });
 });
