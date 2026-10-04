@@ -2,7 +2,7 @@ name: Playwright BDD Tests (Docker)
 
 on:
   push:
-    branches: [ main, master ]  # Sirf main/master branch me merge ya push hone par chalega
+    branches: [ main, master ]
 
 jobs:
   test:
@@ -11,6 +11,10 @@ jobs:
     
     container:
       image: mcr.microsoft.com/playwright:v1.49.0-noble
+
+    # GitHub Secrets ko environment variables me pass karein
+    env:
+      BASE_URL: ${{ secrets.BASE_URL }}
 
     steps:
     - name: Checkout Code
