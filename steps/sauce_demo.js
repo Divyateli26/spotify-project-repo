@@ -1,9 +1,9 @@
 import { createBdd } from 'playwright-bdd';
-import { SauceDemoPage } from '../pages/SauceDemoPage.js';
+import { SauceDemoPage } from '../pages/SauceDemoPage';
 
 const { Given, When, Then } = createBdd();
 
-Given('User Sauce Demo store homepage par navigate karta hai', async ({ page }) => {
+Given('User is on the home page', async ({ page }) => {
   const saucePage = new SauceDemoPage(page);
   await saucePage.navigateToHome();
 });
